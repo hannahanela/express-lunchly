@@ -13,7 +13,7 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
   const customers = await Customer.all();
-  return res.render("customer_list.html", { customers });
+  return next(res.render("customer_list.html", { customers }));
 });
 
 /** Form to add a new customer. */
@@ -35,12 +35,32 @@ router.post("/add/", async function (req, res, next) {
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function (req, res, next) {
-  const customer = await Customer.get(req.params.id);
+    const customer = await Customer.get(req.params.id);
 
+    const reservations = await customer.getReservations();
+
+    return res.render("customer_detail.html", { customer, reservations });
+  
+});
+
+
+/** Show a customer, when searched for by full name. */
+
+router.get("/", async function (req, res, next) {
+  const customerSearch = await Customer.get(req.query.fullName);
+  const firstName = customerSearch.split(' ')[0]
+  const lastName = customerSearch.split(' ')[1]
+  
+  const customerId = await customerSearch.getByFullName(firstName, lastName);
+  const customer = await Customer.get(Number(customerId));
+  console.log(customer)
   const reservations = await customer.getReservations();
 
-  return res.render("customer_detail.html", { customer, reservations });
-});
+  return res.render("customer_detail.html", { customer, reservations })
+  
+})
+
+
 
 /** Show form to edit a customer. */
 
@@ -66,9 +86,9 @@ router.post("/:id/edit/", async function (req, res, next) {
 /** Handle adding a new reservation. */
 
 router.post("/:id/add-reservation/", async function (req, res, next) {
-  const customerId = req.params.id;
+  const customerId = Number(req.params.id);
   const startAt = new Date(req.body.startAt);
-  const numGuests = req.body.numGuests;
+  const numGuests = Number(req.body.numGuests);
   const notes = req.body.notes;
 
   const reservation = new Reservation({
