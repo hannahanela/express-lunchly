@@ -8,13 +8,13 @@ const { Client } = require("pg");
 //     ? "postgresql:///lunchly_test"
 //     : "postgresql:///lunchly";
 
-// const DB_URI = process.env.NODE_ENV === "test"
-//     ? "postgresql://hannahanela:foofoo@localhost/lunchly_test"
-//     : "postgresql://hannahanela:foofoo@localhost/lunchly";
-
 const DB_URI = process.env.NODE_ENV === "test"
-  ? "postgresql://kestrel:obliviate@localhost/lunchly_test"
-  : "postgresql://kestrel:obliviate@localhost/lunchly";
+    ? "postgresql://hannahanela:foofoo@localhost/lunchly_test"
+    : "postgresql://hannahanela:foofoo@localhost/lunchly";
+
+// const DB_URI = process.env.NODE_ENV === "test"
+//   ? "postgresql://kestrel:obliviate@localhost/lunchly_test"
+//   : "postgresql://kestrel:obliviate@localhost/lunchly";
 
 let db = new Client({
   connectionString: DB_URI,
