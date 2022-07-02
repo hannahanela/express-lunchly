@@ -18,7 +18,7 @@ class Customer {
   }
 
   /** get full name of a customer. */
-  fullName() {
+  get fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
 
@@ -82,7 +82,11 @@ class Customer {
       throw err;
     }
 
-    return new Customer(customer)
+    let searchCustomer = new Customer(customer)
+
+    return searchCustomer.id
+
+
   }
 
 

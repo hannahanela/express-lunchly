@@ -41,11 +41,16 @@ router.get("/search", async function (req, res, next) {
   // const firstName = customerSearch.split(' ')[0]
   // const lastName = customerSearch.split(' ')[1]
   console.log("show customer search route***************");
-  const firstName = await Customer.get(req.query.firstName);
-  const lastName = await Customer.get(req.query.lastName);
-  console.log(customerSearch);
-  
-  const customerId = await customerSearch.getByFullName(firstName, lastName);
+  console.log('query', req.query)
+  const fullName = req.query.search.split(" ")
+  const firstName = fullName[0];
+  const lastName = fullName[1];
+
+  // const lastName = req.query.search.split(' ')[1];
+  console.log('first', firstName, 'last', lastName)
+
+  const customerId = await Customer.getByFullName(firstName, lastName);
+  console.log("customerid", customerId);
   const customer = await Customer.get(Number(customerId));
   console.log(customer);
   const reservations = await customer.getReservations();
